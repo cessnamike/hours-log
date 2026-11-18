@@ -10,8 +10,13 @@ export const LEGAL_URL = '/legal.html';
 // and add that host to connect-src in security-headers.js and netlify.toml.
 export const COUNT_URL = import.meta.env?.VITE_COUNT_URL || '';
 // Official pages people should check for themselves.
+// The state's own site about the rule (WV Department of Human Services).
+export const STATE_INFO_URL = 'https://wvmedicaidhelp.org';
+export const STATE_INFO_LABEL = 'wvmedicaidhelp.org';
 export const STATE_LINKS = [
-  ['WV Medicaid: the new rules and who is exempt', 'https://wvmedicaidhelp.org/faqs/'],
+  ["wvmedicaidhelp.org: the state's guide to the new rules", 'https://wvmedicaidhelp.org'],
+  ['Will this apply to you?', 'https://wvmedicaidhelp.org/will-this-apply-to-you/'],
+  ['Questions and answers', 'https://wvmedicaidhelp.org/faqs/'],
   ['WV Bureau for Medical Services', 'https://bms.wv.gov/new-medicaid-rules-are-coming'],
   ['WV PATH (your Medicaid account)', 'https://www.wvpath.wv.gov'],
 ];

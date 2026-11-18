@@ -2,6 +2,8 @@
 
 Phone-first, offline PWA for logging Medicaid community engagement (work requirement) hours and monthly net income, and producing a monthly PDF report. All data stays on the device (IndexedDB); there is no server.
 
+**Not affiliated with the State of West Virginia. Not legal advice.** For more information about the rule, check out [wvmedicaidhelp.org](https://wvmedicaidhelp.org), the WV Department of Human Services' guide.
+
 ## Rules modeled (42 CFR 435.552, CMS-2454-IFC, 91 FR 33348, June 3 2026)
 - 80 hours/month across work (paid, in-kind or unpaid, incl. family caregiving), community service, work program, education.
 - Net (MAGI) monthly income >= federal minimum wage x 80 ($580) meets the month.

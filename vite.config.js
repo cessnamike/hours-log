@@ -16,7 +16,7 @@ export default defineConfig({
       manifest: {
         name: 'Hours Log for WV Medicaid (unofficial)',
         short_name: 'Hours Log',
-        description: 'Free, unofficial record keeping for the West Virginia Medicaid work rule: hours, income and monthly reports. Your records stay on your device.',
+        description: 'Free, unofficial record keeping for the West Virginia Medicaid work rule: hours, income and monthly reports. Your records stay on your device. For more information, check out wvmedicaidhelp.org.',
         theme_color: '#1f5f8b',
         background_color: '#ffffff',
         display: 'standalone',

@@ -10,7 +10,7 @@ export function About() {
         <p>Starting in 2027, many West Virginia Medicaid members aged 19 to 64 must show 80 hours a month of work,
           volunteering, job training or school, or $580 a month in income. Some people are exempt, like
           pregnant women, parents of young children and people with disabilities.</p>
-        <p><b>Check the state's own pages to see if it applies to you:</b></p>
+        <p><b>For more information, and to see if the rule applies to you, check out the state's own pages:</b></p>
         <ul class="plain links">
           {STATE_LINKS.map(([label, href]) => <li><a href={href} target="_blank" rel="noopener">{label}</a></li>)}
           <li>Call the state: <a href={`tel:${STATE_PHONE}`}>{STATE_PHONE}</a></li>
