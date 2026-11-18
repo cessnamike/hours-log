@@ -2,14 +2,22 @@
 // Source: 42 CFR 435.552 (CMS-2454-IFC, 91 FR 33348, June 3, 2026).
 
 export const CATEGORIES = [
-  { id: 'work', label: 'Paid Work', formal: 'Work (paid or in-kind)' },
-  { id: 'self_employment', label: 'My Business', formal: 'Self-employment' },
-  { id: 'caregiving', label: 'Caring for Family', formal: 'Unpaid work: family caregiving' },
+  { id: 'work', label: 'Paid job', formal: 'Paid work (wages or in-kind)' },
+  { id: 'self_employment', label: 'My business', formal: 'Self-employment' },
+  { id: 'caregiving', label: 'Caring for family', formal: 'Unpaid work: family caregiving' },
   { id: 'community_service', label: 'Volunteer', formal: 'Community service' },
-  { id: 'work_program', label: 'Job Training', formal: 'Work program' },
+  { id: 'work_program', label: 'Job training', formal: 'Work program' },
   { id: 'education', label: 'School', formal: 'Educational program' },
 ];
 export const CAT = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]));
+
+// The state's four kinds of qualifying activity (42 CFR 435.552(c)); each app category sits under one.
+export const STATE_GROUPS = [
+  { id: 'work', label: 'Work', formal: 'Work', cats: ['work', 'self_employment', 'caregiving'] },
+  { id: 'volunteer', label: 'Volunteer', formal: 'Community service', cats: ['community_service'] },
+  { id: 'training', label: 'Job training', formal: 'Work program', cats: ['work_program'] },
+  { id: 'school', label: 'School', formal: 'Educational program', cats: ['education'] },
+];
 
 // Which categories take an organization, and which a care recipient.
 export const ORG_CATEGORIES = ['work', 'community_service', 'work_program', 'education'];
@@ -339,4 +347,29 @@ export function renewalStatus(settings, entries, incomeByMonth, educationByMonth
     onTrack: metMonths.length >= MONTHS_NEEDED,
     beforeRuleStarts: renewalMonth < FIRST_COVERED_RENEWAL,
   };
+}
+
+// Counted hours by the state's four groups, with the app categories underneath.
+// Paid job + business count as one figure when income hours replace them (435.552(e)(2)).
+export function groupTotals(sum) {
+  const sub = (id, hours, note = null) => ({ id, label: CAT[id].label, formal: CAT[id].formal, hours, note });
+  const work = [];
+  if (sum.usesIncomeHours) {
+    work.push({ id: 'paid_income', label: 'Paid job and business (from income)', formal: 'Paid work and self-employment, income-based',
+      hours: sum.countedBy.paidWork, note: 'income' });
+  } else {
+    work.push(sub('work', sum.hoursBy.work), sub('self_employment', sum.hoursBy.self_employment));
+  }
+  work.push(sub('caregiving', sum.countedBy.caregiving));
+  const hours = {
+    work: round2(sum.countedBy.paidWork + sum.countedBy.caregiving),
+    volunteer: sum.countedBy.community_service,
+    training: sum.countedBy.work_program,
+    school: sum.countedBy.education,
+  };
+  return STATE_GROUPS.map((g) => ({
+    ...g,
+    hours: hours[g.id],
+    subs: g.id === 'work' ? work.filter((r) => r.hours > 0) : [],
+  }));
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
-import { CATEGORIES, addMonths, monthLabel, fmtHours, round1 } from './rules.js';
+import { CATEGORIES, CAT, STATE_GROUPS, groupTotals, addMonths, monthLabel, fmtHours, round1 } from './rules.js';
 
 export const go = (hash) => {
   location.hash = hash;
@@ -47,15 +47,27 @@ export function Toast({ message, action, onClose }) {
 }
 
 export function CategoryChips({ value, onChange, allowAll }) {
-  return (
-    <div class="chips" role="group" aria-label="Category">
-      {allowAll && (
+  const chip = (c, sm) => (
+    <button type="button" class={`chip${sm ? ' sm' : ''}`} aria-pressed={value === c.id} onClick={() => onChange(c.id)}>
+      {c.label}
+    </button>
+  );
+  // Filter (History): one compact row. Picker: grouped under the state's four headings.
+  if (allowAll) {
+    return (
+      <div class="chips" role="group" aria-label="Category">
         <button type="button" class="chip sm" aria-pressed={!value} onClick={() => onChange('')}>All</button>
-      )}
-      {CATEGORIES.map((c) => (
-        <button type="button" class={`chip${allowAll ? ' sm' : ''}`} aria-pressed={value === c.id} onClick={() => onChange(c.id)}>
-          {c.label}
-        </button>
+        {CATEGORIES.map((c) => chip(c, true))}
+      </div>
+    );
+  }
+  return (
+    <div class="cat-groups">
+      {STATE_GROUPS.map((g) => (
+        <div class="cat-group" role="group" aria-label={g.label}>
+          <span class="cat-group-label">{g.label}</span>
+          <div class="chips">{g.cats.map((id) => chip(CAT[id]))}</div>
+        </div>
       ))}
     </div>
   );
@@ -138,39 +150,39 @@ export function StatusBanner({ sum, daysLeft, isCurrent }) {
 }
 
 export function Breakdown({ sum }) {
-  const rows = [];
-  const paid = sum.countedBy.paidWork;
-  if (paid > 0) {
-    rows.push({
-      label: 'Paid work and business',
-      hours: paid,
-      note: sum.usesIncomeHours
-        ? `From income: $${Math.round(sum.netIncome)} ÷ $${sum.threshold / sum.target} = ${fmtHours(sum.incomeHours)} hours. Uses this instead of the ${fmtHours(sum.loggedPaidHours)} ${fmtHours(sum.loggedPaidHours) === '1' ? 'hour' : 'hours'} you logged, because it is more.`
-        : sum.incomeHours > 0
-          ? `Logged hours. (Income would count as ${fmtHours(sum.incomeHours)} hours.)`
-          : null,
-    });
-  }
-  const add = (id, label) => sum.countedBy[id] > 0 && rows.push({ label, hours: sum.countedBy[id] });
-  add('caregiving', 'Caring for family');
-  add('community_service', 'Volunteer');
-  add('work_program', 'Job training');
-  if (sum.countedBy.education > 0) {
-    rows.push({
-      label: 'School',
-      hours: sum.countedBy.education,
-      note: sum.creditHours > 0 ? `${sum.creditHours} credit hours × 3 × 4.33` : null,
-    });
-  }
-  if (!rows.length) return <p class="muted">No hours yet this month.</p>;
+  if (sum.totalHours <= 0) return <p class="muted">No hours yet this month.</p>;
+  const loggedWord = fmtHours(sum.loggedPaidHours) === '1' ? 'hour' : 'hours';
+  const incomeNote = sum.usesIncomeHours
+    ? `From income: $${Math.round(sum.netIncome)} ÷ $${sum.threshold / sum.target} = ${fmtHours(sum.incomeHours)} hours. Uses this instead of the ${fmtHours(sum.loggedPaidHours)} ${loggedWord} you logged, because it is more.`
+    : sum.incomeHours > 0 && sum.loggedPaidHours > 0
+      ? `Logged hours count. (Income would count as ${fmtHours(sum.incomeHours)} hours.)`
+      : null;
+  const schoolNote = sum.creditHours > 0 ? `${sum.creditHours} credit hours × 3 × 4.33` : null;
   return (
-    <ul class="breakdown">
-      {rows.map((r) => (
-        <li>
-          <span>{r.label}{r.note && <span class="note">{r.note}</span>}</span>
-          <b>{fmtHours(r.hours)} hr</b>
-        </li>
-      ))}
+    <ul class="breakdown grouped">
+      {groupTotals(sum).map((g) => {
+        // The income note goes on the first paid row (paid job, business, or the income-based row).
+        const noteOn = g.subs.find((r) => r.id !== 'caregiving');
+        return (
+          <li class={g.hours > 0 ? '' : 'zero'}>
+            <div class="row-main">
+              <span>{g.label}{g.id === 'school' && schoolNote && <span class="note">{schoolNote}</span>}</span>
+              <b>{fmtHours(g.hours)} hr</b>
+            </div>
+            {g.subs.length > 0 && (
+              <ul class="subs">
+                {g.subs.map((r) => (
+                  <li>
+                    <span>{r.label}{r === noteOn && incomeNote && <span class="note">{incomeNote}</span>}</span>
+                    <span>{fmtHours(r.hours)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+      <li class="total"><div class="row-main"><span>Total</span><b>{fmtHours(sum.totalHours)} of {sum.target} hr</b></div></li>
     </ul>
   );
 }

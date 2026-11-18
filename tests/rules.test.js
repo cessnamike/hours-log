@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   summarizeMonth, creditHoursToMonthly, sixMonthAverage, caregivingRegularity,
   daysLeftInMonth, defaultReportRange, noticeStatus, incomeThreshold, DEFAULT_SETTINGS, addMonths,
-  entryNet, gigIncome, monthIncome, renewalStatus, incomeCeiling,
+  entryNet, gigIncome, monthIncome, renewalStatus, incomeCeiling, groupTotals, STATE_GROUPS, CATEGORIES,
 } from '../src/rules.js';
 
 const S = { ...DEFAULT_SETTINGS };
@@ -215,5 +215,38 @@ describe('household income limit (138% of 2026 poverty guideline)', () => {
   });
   it('ignores the old stored ceiling field', () => {
     expect(incomeCeiling({ householdIncomeCeiling: 99999 })).toBe(1836);
+  });
+});
+
+describe("the state's four groups", () => {
+  const g = (r) => Object.fromEntries(groupTotals(r).map((x) => [x.id, x]));
+  it('every app category belongs to exactly one group', () => {
+    const all = STATE_GROUPS.flatMap((x) => x.cats).sort();
+    expect(all).toEqual(CATEGORIES.map((c) => c.id).sort());
+  });
+  it('groups in the state order: work, volunteer, job training, school', () => {
+    expect(STATE_GROUPS.map((x) => x.label)).toEqual(['Work', 'Volunteer', 'Job training', 'School']);
+  });
+  it('work = paid job + business + caring for family; groups add up to the total', () => {
+    const r = sum([
+      e('2027-01-02', 'work', 30 * 60), e('2027-01-03', 'self_employment', 10 * 60), e('2027-01-04', 'caregiving', 12 * 60),
+      e('2027-01-05', 'community_service', 20 * 60), e('2027-01-06', 'education', 8 * 60),
+    ]);
+    const x = g(r);
+    expect(x.work.hours).toBe(52);
+    expect(x.work.subs.map((s) => [s.label, s.hours])).toEqual([['Paid job', 30], ['My business', 10], ['Caring for family', 12]]);
+    expect(x.volunteer.hours).toBe(20);
+    expect(x.training.hours).toBe(0);
+    expect(x.school.hours).toBe(8);
+    expect(groupTotals(r).reduce((a, y) => a + y.hours, 0)).toBe(r.totalHours);
+  });
+  it('when income hours replace logged paid hours, work shows one income-based line', () => {
+    const r = sum([e('2027-01-02', 'work', 60), e('2027-01-04', 'caregiving', 3 * 60)], { '2027-01': { month: '2027-01', netIncome: 290 } });
+    const x = g(r);
+    expect(x.work.subs.map((s) => s.id)).toEqual(['paid_income', 'caregiving']);
+    expect(x.work.hours).toBe(43); // 290 / 7.25 = 40, + 3 caregiving
+  });
+  it('empty sub-rows are left out', () => {
+    expect(g(sum([e('2027-01-05', 'community_service', 60)])).work.subs).toEqual([]);
   });
 });

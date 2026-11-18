@@ -264,3 +264,15 @@ ul.plain li { margin-bottom: 8px; }
 ul.links li { margin-bottom: 10px; }
 details { margin: 8px 0; }
 details > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; color: var(--brand); font-weight: 600; }
+
+/* the state's four groups */
+.cat-group { margin-bottom: 10px; }
+.cat-group:last-child { margin-bottom: 0; }
+.cat-group-label { display: block; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 4px 0 6px; }
+.breakdown.grouped > li { display: block; }
+.breakdown .row-main { display: flex; justify-content: space-between; gap: 10px; }
+.breakdown li.zero .row-main { color: var(--muted); }
+.breakdown li.zero .row-main b { font-weight: 500; }
+.breakdown .subs { list-style: none; margin: 6px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); }
+.breakdown .subs li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; font-size: 0.95rem; color: var(--muted); border: 0; }
+.breakdown li.total .row-main { font-weight: 700; }

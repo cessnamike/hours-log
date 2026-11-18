@@ -78,7 +78,7 @@ function IncomeCard({ month, data, sum, refresh, notify }) {
       <p class="help" style="margin-bottom:12px">
         Enter your <b>net profit</b> for this month (money in minus business costs), not total sales. A Profit and Loss report from your bookkeeping app or ledger shows it.
         Money you take out of the business for yourself does not count as income.
-        Do not include gig pay you already entered with your Paid Work time.
+        Do not include gig pay you already entered with your Paid job time.
       </p>
       <label class="field">
         <span>Business net profit ($)</span>
@@ -86,9 +86,9 @@ function IncomeCard({ month, data, sum, refresh, notify }) {
           onInput={(e) => set({ netIncome: e.currentTarget.value })} placeholder="0.00" />
       </label>
 
-      <h3>Paid gigs (from your Paid Work time)</h3>
+      <h3>Paid gigs (from your Paid job time)</h3>
       {gig.count === 0 ? (
-        <p class="muted small">None this month. Add pay when you log Paid Work time.</p>
+        <p class="muted small">None this month. Add pay when you log Paid job time.</p>
       ) : (
         <dl class="kv" style="margin:0 0 14px">
           <dt>{gig.count} paid {gig.count === 1 ? 'gig' : 'gigs'}: you were paid</dt><dd>{fmtMoney(gig.gross)}</dd>

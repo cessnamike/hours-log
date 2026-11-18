@@ -2,7 +2,7 @@
 import { jsPDF } from 'jspdf';
 import { autoTable } from 'jspdf-autotable';
 import {
-  summarizeMonth, caregivingRegularity, entryNet, CAT, monthLabel, dateLabel, fmtMoney, fmtHours, fmtDuration, hrs, round2, today,
+  summarizeMonth, caregivingRegularity, entryNet, CAT, monthLabel, dateLabel, fmtMoney, fmtHours, fmtDuration, hrs, round2, today, groupTotals,
 } from './rules.js';
 
 const APP_NAME = 'Medicaid Hours Tracker';
@@ -152,22 +152,30 @@ function summaryLines(sum) {
 }
 
 function categoryRows(sum) {
+  // Grouped under the state's four kinds of activity; the app's categories are indented underneath.
   const rows = [];
   const paidNote = sum.usesIncomeHours
     ? `Income-based: ${fmtHours(sum.incomeHours)} hr used in place of ${fmtHours(sum.loggedPaidHours)} hr logged`
     : '';
-  rows.push([CAT.work.formal, fmtHours(sum.hoursBy.work), '', '']);
-  rows.push([CAT.self_employment.formal, fmtHours(sum.hoursBy.self_employment), '', '']);
-  rows.push(['  Paid work subtotal (counted)', '', fmtHours(sum.countedBy.paidWork), paidNote]);
-  rows.push([CAT.caregiving.formal, fmtHours(sum.hoursBy.caregiving), fmtHours(sum.countedBy.caregiving), '']);
-  rows.push([CAT.community_service.formal, fmtHours(sum.hoursBy.community_service), fmtHours(sum.countedBy.community_service), '']);
-  rows.push([CAT.work_program.formal, fmtHours(sum.hoursBy.work_program), fmtHours(sum.countedBy.work_program), '']);
-  rows.push([
-    CAT.education.formal,
-    fmtHours(sum.hoursBy.education),
-    fmtHours(sum.countedBy.education),
-    sum.halfTime ? 'Half-time or more: meets month' : sum.creditHours > 0 ? `${sum.creditHours} credit hr x 3 x 4.33` : '',
-  ]);
+  for (const g of groupTotals(sum)) {
+    if (g.id === 'work') {
+      rows.push(['Work', '', fmtHours(g.hours), '']);
+      rows.push([`   ${CAT.work.formal}`, fmtHours(sum.hoursBy.work), '', '']);
+      rows.push([`   ${CAT.self_employment.formal}`, fmtHours(sum.hoursBy.self_employment), '', '']);
+      rows.push(['   Paid work and self-employment counted', '', fmtHours(sum.countedBy.paidWork), paidNote]);
+      rows.push([`   ${CAT.caregiving.formal}`, fmtHours(sum.hoursBy.caregiving), fmtHours(sum.countedBy.caregiving), '']);
+    } else if (g.id === 'school') {
+      rows.push([
+        g.formal,
+        fmtHours(sum.hoursBy.education),
+        fmtHours(g.hours),
+        sum.halfTime ? 'Half-time or more: meets month' : sum.creditHours > 0 ? `${sum.creditHours} credit hr x 3 x 4.33` : '',
+      ]);
+    } else {
+      const id = g.cats[0];
+      rows.push([g.formal, fmtHours(sum.hoursBy[id]), fmtHours(g.hours), '']);
+    }
+  }
   rows.push(['Total', '', fmtHours(sum.totalHours), '']);
   return rows;
 }
