@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hours Log: a free app for the new WV Medicaid rules</title>
+  <meta name="description" content="New West Virginia Medicaid rules start in 2027. Hours Log is a free, unofficial app that helps you keep a record of your hours and income. No sign-up. Your records stay on your phone." />
+  <meta name="theme-color" content="#1f5f8b" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="canonical" href="https://hours.mikesheridandigital.com/start/" />
+  <!-- Link preview card (Facebook, texts, email) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Hours Log" />
+  <meta property="og:url" content="https://hours.mikesheridandigital.com/start/" />
+  <meta property="og:title" content="Hours Log: a free app for the new WV Medicaid rules" />
+  <meta property="og:description" content="Keep a record of your work, volunteer, school and job training hours and your income. Free. No sign-up. Your records stay on your phone." />
+  <meta property="og:image" content="https://hours.mikesheridandigital.com/og-start.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Hours Log: a free app for the new West Virginia Medicaid rules" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <style>
+    :root { --bg: #f4f6f8; --card: #fff; --text: #14212b; --muted: #536471; --brand: #1f5f8b; --on-brand: #fff; --line: #d6dee5;
+      --warn-bg: #fff3d6; --warn: #7a4b00; --ok: #2e7d4f; color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1b24; --card: #172631; --text: #e6edf2; --muted: #9fb0bd; --brand: #7cb8e4; --on-brand: #0f1b24; --line: #2b3d4a;
+        --warn-bg: #3a2c0c; --warn: #f3cf7a; --ok: #74cf98; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 18px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
+    main { max-width: 680px; margin: 0 auto; padding: 16px 16px 48px; }
+    header { display: flex; align-items: center; gap: 12px; margin: 8px 0 4px; }
+    header img { width: 52px; height: 52px; border-radius: 12px; flex: none; }
+    header p { margin: 0; font-weight: 700; font-size: 1.1rem; }
+    header span { display: block; font-weight: 400; color: var(--muted); font-size: 0.9rem; }
+    h1 { font-size: 1.75rem; line-height: 1.2; margin: 18px 0 10px; }
+    h2 { font-size: 1.25rem; margin: 0 0 8px; }
+    p { margin: 0 0 12px; }
+    ul { margin: 0 0 12px; padding-left: 1.3em; }
+    li { margin-bottom: 4px; }
+    a { color: var(--brand); }
+    section { background: var(--card); border-radius: 14px; padding: 16px 18px 6px; margin-bottom: 14px; }
+    .lede { font-size: 1.1rem; }
+    .muted { color: var(--muted); font-size: 0.92rem; }
+    .btn { display: block; text-align: center; text-decoration: none; font-weight: 700; font-size: 1.15rem; border-radius: 14px; padding: 16px 18px; min-height: 56px; margin: 0 0 10px; border: 2px solid var(--brand); }
+    .btn.primary { background: var(--brand); color: var(--on-brand); }
+    .btn.secondary { background: transparent; color: var(--brand); }
+    button.btn { width: 100%; font-family: inherit; cursor: pointer; }
+    .free { display: flex; flex-wrap: wrap; gap: 6px 14px; list-style: none; padding: 0; margin: 4px 0 18px; font-weight: 600; }
+    .free li::before { content: "✓ "; color: var(--ok); }
+    .warn { background: var(--warn-bg); color: var(--text); border-radius: 14px; padding: 14px 16px; margin: 12px 0 16px; }
+    .warn h2 { color: var(--warn); font-size: 1.15rem; }
+    .warn ol { margin: 0 0 10px; padding-left: 1.3em; }
+    table { border-collapse: collapse; margin: 4px 0 10px; }
+    td { padding: 4px 18px 4px 0; border-bottom: 1px solid var(--line); }
+    td:last-child { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+    .steps li { margin-bottom: 8px; }
+    footer { margin-top: 18px; }
+    [hidden] { display: none !important; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="/icon-192.png" alt="" width="52" height="52" />
+    <p>Hours Log <span>for WV Medicaid (unofficial)</span></p>
+  </header>
+
+  <!-- Shown by start.js only inside Facebook, Instagram and similar in-app browsers -->
+  <div class="warn" id="inapp" hidden>
+    <h2>Open this page in your phone's browser first</h2>
+    <p>You opened this link inside <b id="inapp-name">an app</b>. Hours Log cannot be installed here, and anything you save here can be lost.</p>
+    <ol>
+      <li>Tap the <b>⋯</b> or <b>⋮</b> button at the top or bottom of the screen.</li>
+      <li>Tap <b>Open in browser</b> (it may say <b>Open in Safari</b> or <b>Open in Chrome</b>).</li>
+    </ol>
+    <a class="btn primary" id="inapp-chrome" href="intent://hours.mikesheridandigital.com/start/#Intent;scheme=https;package=com.android.chrome;end" hidden>Open in Chrome</a>
+    <button class="btn secondary" id="inapp-copy" type="button">Copy the link</button>
+    <p class="muted" id="inapp-copied" hidden>Copied. Open your browser (Safari or Chrome), tap the address bar, and paste.</p>
+    <p class="muted">The link is <b>hours.mikesheridandigital.com</b></p>
+  </div>
+
+  <h1>A free app for the new West Virginia Medicaid rules</h1>
+  <p class="lede">New Medicaid rules start in 2027. If you are on Medicaid and age 19 to 64, you may need to show that you work, volunteer, or go to school. If you can't show it, you could lose your coverage.</p>
+  <p>Hours Log helps you keep a record, so you are ready when the state asks.</p>
+  <ul class="free">
+    <li>Free</li><li>No ads</li><li>No sign-up</li><li>Your records stay on your phone</li>
+  </ul>
+
+  <a class="btn primary" href="/">Open Hours Log</a>
+  <a class="btn secondary" href="#get-it">How to put it on your phone</a>
+
+  <section>
+    <h2>Are you on Medicaid?</h2>
+    <p>You may get Medicaid and not know it. Look at your health insurance card. Many people with a card from one of these plans get their coverage through Medicaid:</p>
+    <ul>
+      <li>Aetna Better Health of West Virginia</li>
+      <li>Highmark Health Options</li>
+      <li>The Health Plan</li>
+      <li>Wellpoint</li>
+    </ul>
+    <p>If you are not sure, call the state at <a href="tel:18777161212">1-877-716-1212</a> or check your account at <a href="https://www.wvpath.wv.gov">wvpath.wv.gov</a>.</p>
+  </section>
+
+  <section>
+    <h2>What do I have to show?</h2>
+    <p>Each month, you need <b>one</b> of these:</p>
+    <ul>
+      <li>You earned at least <b>$580</b> from work, or</li>
+      <li>You did at least <b>80 hours</b> of work, volunteer work, job training, or school. You can add them together. For example, 50 hours of work and 30 hours of volunteer work make 80.</li>
+    </ul>
+    <p>The state checks its own records first. If you work for yourself, do gig work, or get paid in cash, the state may have no record of your work. Then it is up to you to prove it.</p>
+    <p>Your household also has to stay under the Medicaid income limit. This is about how much your whole household can earn each month:</p>
+    <table>
+      <tbody>
+        <tr><td>1 person</td><td>about $1,836</td></tr>
+        <tr><td>2 people</td><td>about $2,489</td></tr>
+        <tr><td>3 people</td><td>about $3,142</td></tr>
+        <tr><td>4 people</td><td>about $3,795</td></tr>
+        <tr><td>5 people</td><td>about $4,449</td></tr>
+        <tr><td>6 people</td><td>about $5,102</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">These are our estimates from the 2026 federal poverty numbers. The state decides the real limit.</p>
+  </section>
+
+  <section>
+    <h2>Do I have to do this?</h2>
+    <p>Some people do not. For example, you may not have to if you:</p>
+    <ul>
+      <li>are pregnant, or were in the last 12 months</li>
+      <li>are a parent or caregiver of a child age 13 or younger, or care for a person with a disability</li>
+      <li>have a disability or a serious health problem</li>
+      <li>are in a drug or alcohol treatment program</li>
+      <li>are a veteran with a 100% disability rating</li>
+      <li>have Medicare</li>
+    </ul>
+    <p>There are more. Use the state's checker at <a href="https://wvmedicaidhelp.org/will-this-apply-to-you/">wvmedicaidhelp.org</a> to see if the rules apply to you.</p>
+  </section>
+
+  <section>
+    <h2>What does the app do?</h2>
+    <ul>
+      <li>Log your hours with a timer or by hand.</li>
+      <li>Log your income each month.</li>
+      <li>See each month at a glance: did you reach 80 hours or $580?</li>
+      <li>Count down to your Medicaid renewal date.</li>
+      <li>Make a report you can print or send to the state.</li>
+      <li>Save a backup, so you don't lose your records if you get a new phone.</li>
+    </ul>
+    <p>It is free. No tricks. No ads. No credit card. No sign-up. Your records stay on your phone. We never see them.</p>
+  </section>
+
+  <section id="get-it">
+    <h2>How do I put it on my phone?</h2>
+    <p>Hours Log is not in the app store. You get it from this website, and it works like any other app.</p>
+    <p><b>Android phone (Chrome):</b></p>
+    <ol class="steps">
+      <li>Tap <b>Open Hours Log</b> below.</li>
+      <li>Tap <b>I understand</b>.</li>
+      <li>Tap the <b>Install</b> button at the top of the screen. If you don't see it, tap <b>⋮</b> (top right), then <b>Add to Home screen</b> or <b>Install app</b>.</li>
+    </ol>
+    <p><b>iPhone (Safari):</b></p>
+    <ol class="steps">
+      <li>Tap <b>Open Hours Log</b> below.</li>
+      <li>Tap <b>I understand</b>.</li>
+      <li>Tap the <b>Share</b> button (a square with an arrow pointing up).</li>
+      <li>Tap <b>Add to Home Screen</b>, then <b>Add</b>.</li>
+      <li>Open Hours Log from the new icon on your home screen before you add any records.</li>
+    </ol>
+    <p>After that, it works without internet.</p>
+    <a class="btn primary" href="/">Open Hours Log</a>
+  </section>
+
+  <section>
+    <h2>Please read</h2>
+    <p>This app is not from the State of West Virginia, the Department of Human Services, or any Medicaid plan. It is not legal advice. I am not a lawyer. This app is based on my own reading of the rules, and the rules can change without notice. Only the state decides if you meet the rules. Use the app to keep records, but do not rely on it alone.</p>
+    <p>For more information about the rules, check out <a href="https://wvmedicaidhelp.org">wvmedicaidhelp.org</a>.</p>
+  </section>
+
+  <footer class="muted">
+    <p><a href="/legal.html">Terms, privacy and license</a> · Hours Log, created by Mike Sheridan · <a href="mailto:mike@mikesheridandigital.com">mike@mikesheridandigital.com</a> · <a href="https://github.com/cessnamike/hours-log">Source code</a></p>
+  </footer>
+</main>
+<script src="/start/start.js"></script>
+</body>
+</html>
