@@ -1,7 +1,7 @@
 import { useInstall } from '../install.js';
 
 // Big "put it on your home screen" card at the top of Home. Hidden inside the installed app.
-export function InstallCard() {
+export function InstallCard({ hasEntries }) {
   const { mode, install, platform } = useInstall();
   if (mode === 'app' || mode === 'wait') return null;
 
@@ -27,6 +27,12 @@ export function InstallCard() {
           <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
           <li>Tap <b>Add</b>.</li>
         </ol>
+      )}
+      {mode === 'ios' && (
+        <p class="help">
+          <b>Do this before you add records.</b> On iPhone, records you enter here in Safari stay in Safari and do not show up in the home-screen app.
+          {hasEntries && <> You already have records here: first <a href="#/reports">save a backup</a>, then put it back in the home-screen app.</>}
+        </p>
       )}
       {mode === 'manual' && platform === 'android' && (
         <ol class="steps">

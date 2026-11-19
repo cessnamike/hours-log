@@ -59,7 +59,7 @@ export function Home({ data, refresh, notify }) {
 
   return (
     <>
-      <InstallCard />
+      <InstallCard hasEntries={entries.length > 0} />
 
       {!entries.length && (
         <div class="banner info restore-offer">
