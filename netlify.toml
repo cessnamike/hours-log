@@ -4,12 +4,15 @@
 
 [build.environment]
   NODE_VERSION = "24"
+  # Anonymous first-open count (see src/count.js and the privacy section of public/legal.html).
+  # Only the site build sets this, so local builds and tests never send a count.
+  VITE_COUNT_URL = "https://cessnamike.goatcounter.com/count?p=/first-open"
 
 # Keep in sync with security-headers.js
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://cessnamike.goatcounter.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "no-referrer"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"

@@ -5,7 +5,7 @@ export const CSP = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://cessnamike.goatcounter.com",
   "worker-src 'self'",
   "manifest-src 'self'",
   "object-src 'none'",

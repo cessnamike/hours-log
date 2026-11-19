@@ -26,7 +26,7 @@ Stack: Vite, Preact, Dexie, jsPDF + autotable (lazy-loaded), vite-plugin-pwa. De
 - Hosted at `hours.mikesheridandigital.com` (planned). Terms, privacy and license: `public/legal.html`.
   Bump `TERMS_VERSION` in `src/rules.js` when the terms change materially; the app asks people to accept again.
 - Public facts (contact, source URL, state links) live in `src/config.js`.
-- Anonymous first-open count: build with `VITE_COUNT_URL=...` and add its host to the CSP `connect-src`. Off by default.
+- Anonymous first-open count: GoatCounter (`cessnamike.goatcounter.com`). Only the Netlify build turns it on (`VITE_COUNT_URL` in `netlify.toml`), so local builds and tests never send a count. The counter host is allowed in the CSP `connect-src` in `netlify.toml` and `security-headers.js`.
 - Build targets older phones (Chrome 80, iOS 14).
 - Income warning = 138% of the HHS poverty guideline for the household size (2026: $15,960 + $5,680 per added person).
 
