@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
-import { saveSettings } from '../db.js';
-import { exportBackup, importBackup, entriesToCsv, shareOrDownload, canShareFiles } from '../backup.js';
-import { thisMonth, addMonths, monthRange, monthLabel, monthOf, defaultReportRange, today, dateLabel } from '../rules.js';
+import { entriesToCsv, shareOrDownload, canShareFiles } from '../backup.js';
+import { BackupCard } from './Backup.jsx';
+import { thisMonth, addMonths, monthRange, monthLabel, monthOf, defaultReportRange, today } from '../rules.js';
 
 const fileSafe = (s) => (s || 'member').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
 
@@ -18,7 +18,7 @@ function MonthSelect({ value, onChange, label, min, max }) {
   );
 }
 
-export function Reports({ data, refresh, notify }) {
+export function Reports({ data, refresh }) {
   const { settings, entries } = data;
   const share = canShareFiles();
   const earliest = entries.reduce((min, e) => (monthOf(e.date) < min ? monthOf(e.date) : min), addMonths(thisMonth(), -12));
@@ -52,31 +52,6 @@ export function Reports({ data, refresh, notify }) {
   const csv = async () => {
     const blob = new Blob([entriesToCsv(entries, settings)], { type: 'text/csv' });
     await shareOrDownload(blob, `Medicaid-hours_${name}_all_${today()}.csv`, { preferShare: false });
-  };
-
-  const backup = async () => {
-    const json = JSON.stringify(await exportBackup(), null, 1);
-    const blob = new Blob([json], { type: 'application/json' });
-    const result = await shareOrDownload(blob, `Medicaid-hours-backup_${today()}.json`);
-    if (result !== 'cancelled') {
-      await saveSettings({ lastBackupAt: new Date().toISOString() });
-      await refresh();
-      notify('Backup saved');
-    }
-  };
-
-  const restore = async (file) => {
-    if (!file) return;
-    try {
-      const parsed = JSON.parse(await file.text());
-      const count = parsed?.entries?.length ?? 0;
-      if (!confirm(`Replace everything on this phone with this backup (${count} entries)? This cannot be undone.`)) return;
-      await importBackup(parsed);
-      await refresh();
-      notify('Backup restored');
-    } catch (e) {
-      setError(e instanceof SyntaxError ? 'That file is not a backup from this app.' : e.message);
-    }
   };
 
   return (
@@ -113,22 +88,12 @@ export function Reports({ data, refresh, notify }) {
         <p class="help">Print the report, sign it, and send it with any proof of income the notice asks for.</p>
       </div>
 
+      <BackupCard data={data} refresh={refresh} />
+
       <div class="card">
-        <h2>Backup</h2>
-        <p>
-          Your records are saved only on this phone. Save a backup copy to your email or Google Drive so you don't lose them if your phone breaks.
-        </p>
-        <p class="muted small">
-          Last backup: {settings.lastBackupAt ? dateLabel(settings.lastBackupAt.slice(0, 10)) : 'never'}
-        </p>
-        <div class="stack">
-          <button class="primary block" onClick={backup}>{share ? 'Save a backup (share)' : 'Download a backup'}</button>
-          <button class="block" onClick={csv}>Download all entries as a spreadsheet (CSV)</button>
-          <label class="btn block">
-            Restore from a backup file
-            <input type="file" accept="application/json,.json" style="display:none" onChange={(e) => { restore(e.currentTarget.files[0]); e.currentTarget.value = ''; }} />
-          </label>
-        </div>
+        <h2>Spreadsheet</h2>
+        <p class="help">All your entries in a file you can open in Excel or Google Sheets.</p>
+        <button class="block" onClick={csv}>Download all entries (CSV)</button>
       </div>
 
       {error && <p class="error" role="alert">{error}</p>}

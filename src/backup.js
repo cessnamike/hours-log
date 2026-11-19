@@ -101,6 +101,11 @@ export async function shareOrDownload(blob, filename, { preferShare = true } = {
       // fall through to download
     }
   }
+  downloadFile(blob, filename);
+  return 'downloaded';
+}
+
+export function downloadFile(blob, filename) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -109,7 +114,6 @@ export async function shareOrDownload(blob, filename, { preferShare = true } = {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10000);
-  return 'downloaded';
 }
 
 export const canShareFiles = () => {

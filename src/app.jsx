@@ -9,6 +9,7 @@ import { Reports } from './screens/Reports.jsx';
 import { Settings } from './screens/Settings.jsx';
 import { Welcome } from './screens/Welcome.jsx';
 import { About } from './screens/About.jsx';
+import { RestoreScreen } from './screens/Backup.jsx';
 import { Deleted } from './screens/Deleted.jsx';
 import { TERMS_VERSION } from './rules.js';
 import { Tabs, Toast } from './ui.jsx';
@@ -63,6 +64,7 @@ export function App() {
     case 'reports': view = <Reports {...ctx} />; break;
     case 'settings': view = <Settings {...ctx} />; break;
     case 'about': view = <About />; break;
+    case 'restore': view = <RestoreScreen {...ctx} />; break;
     default: view = <Home {...ctx} />;
   }
 

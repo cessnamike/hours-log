@@ -4,6 +4,7 @@ import {
   summarizeMonth, thisMonth, today, daysLeftInMonth, CAT, fmtDuration, noticeStatus, dateLabel, renewalStatus, monthLabel,
 } from '../rules.js';
 import { Ring, StatusBanner, Breakdown, go, useNow, fmtElapsed } from '../ui.jsx';
+import { InstallCard } from './InstallCard.jsx';
 
 function repeatCandidates(entries, limit = 3) {
   const seen = new Set();
@@ -58,6 +59,15 @@ export function Home({ data, refresh, notify }) {
 
   return (
     <>
+      <InstallCard />
+
+      {!entries.length && (
+        <div class="banner info restore-offer">
+          Used Hours Log before, on another phone or another web address?
+          <span class="sub"><a href="#/restore">Put back your backup</a></span>
+        </div>
+      )}
+
       {!settings.memberName && (
         <div class="banner info">
           Welcome! Start by adding your name and the people you care for.

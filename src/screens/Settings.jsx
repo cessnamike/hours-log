@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
 import { saveSettings, newId, deleteEverything } from '../db.js';
-import { DEFAULT_SETTINGS, incomeThreshold, incomeCeiling, fmtMoney, addMonths, thisMonth, monthLabel, today, dateLabel } from '../rules.js';
+import { DEFAULT_SETTINGS, incomeThreshold, incomeCeiling, fmtMoney, addMonths, thisMonth, monthLabel, today, dateLabel, localDay } from '../rules.js';
 
 const ORG_TYPES = [
   ['nonprofit', 'Nonprofit'],
@@ -285,7 +285,7 @@ function DeleteCard({ onDeleted, hasData, lastBackupAt }) {
             This erases every record on this device. It cannot be undone.
             {hasData && (
               <span class="sub">
-                {lastBackupAt ? `Your last backup was ${dateLabel(lastBackupAt.slice(0, 10))}. ` : 'You have never saved a backup. '}
+                {lastBackupAt ? `Your last backup was ${dateLabel(localDay(lastBackupAt))}. ` : 'You have never saved a backup. '}
                 <a href="#/reports">Save a backup first</a>
               </span>
             )}

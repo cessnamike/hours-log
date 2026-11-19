@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   summarizeMonth, creditHoursToMonthly, sixMonthAverage, caregivingRegularity,
   daysLeftInMonth, defaultReportRange, noticeStatus, incomeThreshold, DEFAULT_SETTINGS, addMonths,
-  entryNet, gigIncome, monthIncome, renewalStatus, incomeCeiling, groupTotals, STATE_GROUPS, CATEGORIES,
+  entryNet, gigIncome, monthIncome, renewalStatus, incomeCeiling, groupTotals, STATE_GROUPS, CATEGORIES, localDay,
 } from '../src/rules.js';
 
 const S = { ...DEFAULT_SETTINGS };
@@ -248,5 +248,12 @@ describe("the state's four groups", () => {
   });
   it('empty sub-rows are left out', () => {
     expect(g(sum([e('2027-01-05', 'community_service', 60)])).work.subs).toEqual([]);
+  });
+});
+
+describe('localDay', () => {
+  it('shows a saved time as the local calendar day, not the UTC day', () => {
+    const evening = new Date(2026, 10, 18, 22, 30); // 10:30 pm local on Nov 18
+    expect(localDay(evening.toISOString())).toBe('2026-11-18');
   });
 });

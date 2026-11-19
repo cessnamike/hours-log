@@ -64,6 +64,8 @@ export const incomeThreshold = (s) => round2((s.minWage || 0) * (s.monthlyHourTa
 const pad = (n) => String(n).padStart(2, '0');
 export const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 export const today = () => ymd(new Date());
+// A saved timestamp (UTC) as the person's own calendar day. Slicing the ISO string gives tomorrow's date in the evening.
+export const localDay = (iso) => ymd(new Date(iso));
 export const monthOf = (dateStr) => dateStr.slice(0, 7);
 export const thisMonth = () => monthOf(today());
 export const parseYmd = (s) => {

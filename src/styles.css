@@ -276,3 +276,12 @@ details > summary { cursor: pointer; min-height: 44px; display: flex; align-item
 .breakdown .subs { list-style: none; margin: 6px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); }
 .breakdown .subs li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; font-size: 0.95rem; color: var(--muted); border: 0; }
 .breakdown li.total .row-main { font-weight: 700; }
+
+/* install card and backup steps */
+.card.install { background: var(--brand-soft); border: 2px solid var(--brand); }
+.card.install h2 { margin-top: 0; }
+.steps { margin: 8px 0 14px; padding-left: 1.4em; }
+.steps li { margin-bottom: 8px; line-height: 1.45; }
+.steps .ico { display: inline-block; padding: 0 2px; }
+.banner.saved { margin-top: 12px; }
+.fname { overflow-wrap: anywhere; }
