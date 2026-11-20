@@ -47,7 +47,7 @@ export const DEFAULT_SETTINGS = {
 };
 
 // Bump when the disclaimer changes in a way people must re-accept (also update public/legal.html).
-export const TERMS_VERSION = '2026-11-18';
+export const TERMS_VERSION = '2026-11-19';
 export const RULES_CHECKED = '2026-11-18';
 
 // Monthly household income limit (rounded up to the dollar).
