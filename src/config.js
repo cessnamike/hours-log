@@ -5,6 +5,9 @@ export const AUTHOR = 'Mike Sheridan';
 export const CONTACT_EMAIL = 'mike@mikesheridandigital.com';
 export const SOURCE_URL = 'https://github.com/cessnamike/hours-log'; // The AGPL requires offering the source
 export const LEGAL_URL = '/legal.html';
+// Common questions on the landing page (a static page, saved for offline use).
+export const HELP_URL = '/start/#help';
+export const PAPER_LOG_URL = '/paper-log.pdf';
 // Anonymous first-open count (no ID, no personal data). Empty = off.
 // netlify.toml sets VITE_COUNT_URL for the site build (GoatCounter, cessnamike.goatcounter.com).
 // The counter's host must be in connect-src in security-headers.js and netlify.toml.

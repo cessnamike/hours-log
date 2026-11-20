@@ -5,6 +5,7 @@ import {
 } from '../rules.js';
 import { Ring, StatusBanner, Breakdown, go, useNow, fmtElapsed } from '../ui.jsx';
 import { InstallCard } from './InstallCard.jsx';
+import { HELP_URL } from '../config.js';
 
 function repeatCandidates(entries, limit = 3) {
   const seen = new Set();
@@ -132,6 +133,8 @@ export function Home({ data, refresh, notify }) {
       )}
 
       <RenewalCard data={data} />
+
+      <p class="center"><a class="help-link" href={HELP_URL} target="_blank" rel="noopener">Help and common questions</a></p>
     </>
   );
 }

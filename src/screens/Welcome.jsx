@@ -1,6 +1,6 @@
 import { saveSettings } from '../db.js';
 import { TERMS_VERSION } from '../rules.js';
-import { APP_FULL_NAME, LEGAL_URL, STATE_INFO_URL, STATE_INFO_LABEL } from '../config.js';
+import { APP_FULL_NAME, LEGAL_URL, STATE_INFO_URL, STATE_INFO_LABEL, PAPER_LOG_URL } from '../config.js';
 import { countFirstOpen } from '../count.js';
 
 // Shown on first open, and again whenever TERMS_VERSION changes.
@@ -25,6 +25,11 @@ export function Welcome({ data, refresh }) {
       <p>For more information, check out <a href={STATE_INFO_URL} target="_blank" rel="noopener">{STATE_INFO_LABEL}</a>, the state's own guide to the rule.</p>
       <p><a href={LEGAL_URL} target="_blank" rel="noopener">Read the full terms and privacy notice</a></p>
       <button class="primary block big" onClick={accept}>I understand</button>
+      <div class="paper-offer">
+        <b>Prefer a paper log?</b>
+        <span>Print one page for each month and keep it with your proof.</span>
+        <a class="btn block" href={PAPER_LOG_URL} download="Hours-Log-paper-log.pdf">Download the paper log (PDF)</a>
+      </div>
     </main>
   );
 }

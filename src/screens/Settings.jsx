@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'preact/hooks';
+import { HELP_URL } from '../config.js';
 import { saveSettings, newId, deleteEverything } from '../db.js';
 import { DEFAULT_SETTINGS, incomeThreshold, incomeCeiling, fmtMoney, addMonths, thisMonth, monthLabel, today, dateLabel, localDay } from '../rules.js';
 
@@ -27,6 +28,7 @@ export function Settings({ data, refresh, notify, onDeleted }) {
       <RenewalCard s={s} save={save} />
       <NumbersCard s={s} save={save} />
       <StorageCard s={s} save={save} />
+      <a class="btn block" href={HELP_URL} target="_blank" rel="noopener" style="margin-bottom:10px">Help and common questions</a>
       <a class="btn block" href="#/about" style="margin-bottom:14px">About this app and who the rule affects</a>
       <DeleteCard onDeleted={onDeleted} hasData={data.entries.length > 0} lastBackupAt={s.lastBackupAt} />
       {/* Rules modeled on 42 CFR 435.552 / 435.554 / 435.558 (CMS-2454-IFC, 91 FR 33348). */}

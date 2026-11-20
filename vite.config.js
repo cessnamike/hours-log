@@ -31,7 +31,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2,pdf}'],
         // jsPDF's optional HTML/SVG renderers are never used; keep them out of the offline cache.
         globIgnores: ['**/html2canvas-*.js', '**/purify.es-*.js', '**/index.es-*.js', 'og-*.png'],
         navigateFallback: '/index.html',

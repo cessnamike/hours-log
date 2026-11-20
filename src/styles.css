@@ -285,3 +285,11 @@ details > summary { cursor: pointer; min-height: 44px; display: flex; align-item
 .steps .ico { display: inline-block; padding: 0 2px; }
 .banner.saved { margin-top: 12px; }
 .fname { overflow-wrap: anywhere; }
+
+/* Help link at the bottom of Home: a full-size tap target. */
+.help-link { display: inline-block; min-height: 44px; line-height: 44px; padding: 0 8px; }
+
+/* Welcome screen: paper log for people who prefer it. */
+.paper-offer { margin-top: 18px; padding: 12px 14px; border: 1px solid var(--line, #d6dee5); border-radius: 12px; text-align: left; }
+.paper-offer b, .paper-offer span { display: block; }
+.paper-offer span { margin: 2px 0 10px; font-size: 0.95rem; }
