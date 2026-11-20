@@ -23,8 +23,8 @@ export function InstallCard({ hasEntries }) {
       )}
       {mode === 'ios' && (
         <ol class="steps">
-          <li>Tap the <b>Share</b> button <span class="ico" aria-hidden="true">⬆︎</span> (a square with an arrow). In Safari it is at the bottom of the screen.</li>
-          <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+          <li>At the bottom of Safari, tap the <b>⋯</b> button, then tap <b>Share</b> <span class="ico" aria-hidden="true">⬆︎</span>. (On some iPhones, the Share button, a square with an arrow, is right at the bottom of the screen.)</li>
+          <li>Tap <b>Add to Home Screen</b>. If you don't see it, tap <b>More</b> or scroll down.</li>
           <li>Tap <b>Add</b>.</li>
         </ol>
       )}
