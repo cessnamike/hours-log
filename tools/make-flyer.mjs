@@ -1,5 +1,5 @@
 // Prints tools/flyer.html to public/flyer.pdf (one US Letter page, wall poster)
-// and public/flyer.png (the same page as a picture, 1632x2112, for Facebook and
+// and public/flyer.png (the poster as a 1639x2048 picture, for Facebook and
 // for the preview on /poster/).
 // Needs playwright-core and a Chromium browser. Usage:
 //   node tools/make-flyer.mjs [path-to-browser]
@@ -22,12 +22,19 @@ await page.goto(src);
 await page.pdf({ path: path.join(here, '..', 'public', 'flyer.pdf'), format: 'Letter', preferCSSPageSize: true, printBackground: true });
 const pages = await page.evaluate(() => Math.ceil(document.body.scrollHeight / (11 * 96 - 0.9 * 96)));
 
-// Picture: the Letter page at 96 px/in, 2x scale, with the print margins drawn as white space.
-const pic = await browser.newPage({ viewport: { width: 816, height: 1056 }, deviceScaleFactor: 2 });
-await pic.goto(src);
-await pic.emulateMedia({ media: 'print' });
-await pic.addStyleTag({ content: 'html{background:#fff} body{padding:0.45in 0.55in;height:11in;overflow:hidden;background:#fff}' });
-await pic.screenshot({ path: path.join(here, '..', 'public', 'flyer.png'), clip: { x: 0, y: 0, width: 816, height: 1056 } });
+// Picture for Facebook: the poster's printable area (7.4in wide) with thin white margins,
+// framed at 4:5 (Facebook's tallest feed shape, so nothing is cropped) and 2048 px tall
+// (Facebook's largest size before it shrinks a photo). Result: 1638x2048.
+const PAD = 28, H_PX = 2048, RATIO = 0.8;
+const measure = await browser.newPage({ viewport: { width: 710, height: 1000 } });
+await measure.goto(src); await measure.emulateMedia({ media: 'print' });
+await measure.addStyleTag({ content: 'body{width:710px}' });
+const contentH = await measure.evaluate(() => document.body.scrollHeight);
+const totalH = contentH + 2 * PAD, totalW = Math.round(totalH * RATIO);
+const pic = await browser.newPage({ viewport: { width: totalW, height: totalH }, deviceScaleFactor: H_PX / totalH });
+await pic.goto(src); await pic.emulateMedia({ media: 'print' });
+await pic.addStyleTag({ content: `html{background:#fff} body{width:710px;margin:${PAD}px auto;background:#fff}` });
+await pic.screenshot({ path: path.join(here, '..', 'public', 'flyer.png'), clip: { x: 0, y: 0, width: totalW, height: totalH } });
 
 await browser.close();
 console.log(`Wrote public/flyer.pdf (about ${pages} page${pages === 1 ? '' : 's'}) and public/flyer.png`);
